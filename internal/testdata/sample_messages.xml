@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sample_messages.xml
+
+  A small collection of sample XML messages used by the initial generator
+  and runtime unit tests. These are concise, human-readable examples for
+  SessionSetup, ServiceDiscovery and CertificateUpdate messages.
+
+  Notes:
+  - Binary/certificate contents are represented as short base64 placeholders
+    or abbreviated PEM-like snippets for readability.
+  - These examples are for functional testing of the generator/codec pipeline
+    and are not official ISO message instances.
+-->
+<Samples>
+
+  <!-- Session setup: request from EV (minimal) -->
+  <SessionSetupReq>
+    <!-- EVCCID encoded as hex string (example) -->
+    <EVCCID>0A1B2C3D4E5F0011223344</EVCCID>
+  </SessionSetupReq>
+
+  <!-- Session setup: response from EVSE -->
+  <SessionSetupRes>
+    <ResponseCode>OK</ResponseCode>
+    <!-- EVSE identifier as hex string (example) -->
+    <EVSEID>ABCDEF1234567890</EVSEID>
+    <!-- Unix epoch seconds (optional in some schemas) -->
+    <DateTimeNow>1672531200</DateTimeNow>
+  </SessionSetupRes>
+
+  <!-- Service discovery: request with optional filters -->
+  <ServiceDiscoveryReq>
+    <ServiceScope>public</ServiceScope>
+    <ServiceCategory>charging</ServiceCategory>
+  </ServiceDiscoveryReq>
+
+  <!-- Service discovery: response listing available services -->
+  <ServiceDiscoveryRes>
+    <ServiceList>
+      <Service>
+        <ServiceID>svc-001</ServiceID>
+        <ServiceName>ParkingCharge</ServiceName>
+        <ServiceCategory>charging</ServiceCategory>
+        <ServiceScope>public</ServiceScope>
+      </Service>
+      <Service>
+        <ServiceID>svc-002</ServiceID>
+        <ServiceName>EVSEInfo</ServiceName>
+        <ServiceCategory>info</ServiceCategory>
+      </Service>
+    </ServiceList>
+  </ServiceDiscoveryRes>
+
+  <!-- Certificate update: request (simplified) -->
+  <CertificateUpdateReq Id="cert-req-1">
+    <ContractSignatureCertChain>
+      <!-- Certificates represented as base64 placeholders -->
+      <Certificate>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...</Certificate>
+      <Certificate>MIICJzCCAeCgAwIBAgI...</Certificate>
+    </ContractSignatureCertChain>
+    <ContractID>contract-123</ContractID>
+    <ListOfRootCertificateIDs>
+      <RootCertificateID>root-1</RootCertificateID>
+      <RootCertificateID>root-2</RootCertificateID>
+    </ListOfRootCertificateIDs>
+    <!-- Diffie-Hellman parameters encoded in base64 (example) -->
+    <DHParams>c2FtcGxlLWRoLXBhcmFtcz0=</DHParams>
+  </CertificateUpdateReq>
+
+  <!-- Certificate update: response (simplified) -->
+  <CertificateUpdateRes Id="cert-res-1">
+    <ResponseCode>OK</ResponseCode>
+    <ContractSignatureCertChain>
+      <Certificate>MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...</Certificate>
+    </ContractSignatureCertChain>
+    <ContractSignatureEncryptedPrivateKey>U2VjcmV0RW5jcnlwdGVkS2V5...</ContractSignatureEncryptedPrivateKey>
+    <ContractID>contract-123</ContractID>
+    <RetryCounter>0</RetryCounter>
+  </CertificateUpdateRes>
+
+</Samples>
