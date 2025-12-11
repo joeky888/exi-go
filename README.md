@@ -208,3 +208,4 @@ print(codec.message_type_name(MessageType.SessionSetupReq))"
 - https://github.com/EVerest/cbexigen
 - https://github.com/tux-evse/iso15118-encoders
 - https://github.com/EcoG-io/iso15118
+- https://github.com/EXIficient/exificient
