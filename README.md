@@ -1,8 +1,3 @@
-# Pure Go implementation of EXI encoder/decoder for iso 15118-20
-
-Date: 2025-12-10 (Updated)
-Author: AI (exi-go port)
-
 ## Summary
 
 **MILESTONE: 26 MESSAGE TYPES FULLY IMPLEMENTED (100% COMPLETE)!** The Go EXI encoder/decoder now has complete type definitions for all 26 ISO 15118-20 CommonMessages message types and working implementations for ALL 26 message types with correct event code mappings. The codebase has been significantly refactored with shared helper functions and established clear patterns. Over 4,700 lines of production-ready encoder/decoder code added across multiple phases.
@@ -28,19 +23,19 @@ Author: AI (exi-go port)
 - PowerDeliveryRes (event 22) - encoder/decoder COMPLETE
 - VehicleCheckInRes (event 43) - encoder/decoder COMPLETE
 - VehicleCheckOutRes (event 45) - encoder/decoder COMPLETE
-- VehicleCheckInReq (event 49) - encoder/decoder COMPLETE ✨
-- VehicleCheckOutReq (event 51) - encoder/decoder COMPLETE ✨
-- ServiceSelectionReq (event 33) - encoder/decoder COMPLETE ✨
-- AuthorizationSetupRes (event 3) - encoder/decoder COMPLETE ✨
-- ScheduleExchangeReq (event 27) - encoder/decoder COMPLETE ✨
-- ScheduleExchangeRes (event 28) - encoder/decoder COMPLETE ✨
-- PowerDeliveryReq (event 21) - encoder/decoder COMPLETE ✨
-- AuthorizationReq (event 0) - encoder/decoder COMPLETE ✨
-- ServiceDetailRes (event 30) - encoder/decoder COMPLETE ✨
-- CertificateInstallationReq (event 7) - encoder/decoder COMPLETE ✨
-- CertificateInstallationRes (event 8) - encoder/decoder COMPLETE ✨
-- CLReqControlMode (event 4) - encoder/decoder COMPLETE ✨
-- CLResControlMode (event 5) - encoder/decoder COMPLETE ✨
+- VehicleCheckInReq (event 49) - encoder/decoder COMPLETE
+- VehicleCheckOutReq (event 51) - encoder/decoder COMPLETE
+- ServiceSelectionReq (event 33) - encoder/decoder COMPLETE
+- AuthorizationSetupRes (event 3) - encoder/decoder COMPLETE
+- ScheduleExchangeReq (event 27) - encoder/decoder COMPLETE
+- ScheduleExchangeRes (event 28) - encoder/decoder COMPLETE
+- PowerDeliveryReq (event 21) - encoder/decoder COMPLETE
+- AuthorizationReq (event 0) - encoder/decoder COMPLETE
+- ServiceDetailRes (event 30) - encoder/decoder COMPLETE
+- CertificateInstallationReq (event 7) - encoder/decoder COMPLETE
+- CertificateInstallationRes (event 8) - encoder/decoder COMPLETE
+- CLReqControlMode (event 4) - encoder/decoder COMPLETE
+- CLResControlMode (event 5) - encoder/decoder COMPLETE
 
 ✅ **Infrastructure Complete**:
 
@@ -65,6 +60,16 @@ Author: AI (exi-go port)
 - Type-safe enum handling with bidirectional mapping
 - Comprehensive error handling and nil checks
 - Production-ready code quality following C reference exactly
+
+✅ CLI usage:
+
+```sh
+# Decoding
+go run cmd/v2gcodec/main.go decode '808c02050d961e8809ac39d06204050d961ea72f80'
+
+# Encoding
+go run cmd/v2gcodec/main.go encode -type SessionSetupReq '{"Header":{"SessionID":"ChssPQ==","TimeStamp":1672531200},"EVCCID":"ChssPU5f"}'
+```
 
 ✅ **ALL MESSAGE TYPES COMPLETE**: 26/26 (100%)
 
@@ -198,9 +203,8 @@ codec = V2GCodec(); codec.init(); \
 print(codec.message_type_name(MessageType.SessionSetupReq))"
 ```
 
-### What Remains (Essential)
+## References
 
-- `go/` - Pure Go implementation (9,662 lines)
-- `testvectors/*.exi` - Golden test files (28 files)
-- `C_CODE_REMOVAL_GUIDE.md` - Removal documentation
-- `cleanup_c_code.sh` - Automated cleanup script
+- https://github.com/EVerest/cbexigen
+- https://github.com/tux-evse/iso15118-encoders
+- https://github.com/EcoG-io/iso15118
