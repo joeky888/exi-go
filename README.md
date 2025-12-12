@@ -59,6 +59,7 @@
 ✅ **Code Quality**:
 
 - 100% compilation success
+- 33x faster and 12x less memory compared to EXIficient-java [see bennchmark](./EXIFICIENT_COMPARISON.md)
 - Grammar IDs documented for every message type
 - Type-safe enum handling with bidirectional mapping
 - Comprehensive error handling and nil checks
