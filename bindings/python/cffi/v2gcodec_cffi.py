@@ -61,10 +61,11 @@ _DEFAULT_LIB_CANDIDATES = [
 ]
 
 
-# ISO 15118-20 CommonMessages message type constants
+# ISO 15118-20 message type constants
 class MessageType:
-    """Message type constants for ISO 15118-20 CommonMessages."""
+    """Message type constants for ISO 15118-20."""
 
+    # Common messages (all services)
     AuthorizationReq = 0
     AuthorizationRes = 1
     AuthorizationSetupReq = 2
@@ -93,6 +94,20 @@ class MessageType:
     VehicleCheckInRes = 50
     VehicleCheckOutReq = 51
     VehicleCheckOutRes = 52
+
+    # WPT (Wireless Power Transfer) messages
+    WPT_AlignmentCheckReq = 53
+    WPT_AlignmentCheckRes = 54
+    WPT_FinePositioningReq = 55
+    WPT_FinePositioningRes = 56
+    WPT_ChargeLoopReq = 57
+    WPT_ChargeLoopRes = 58
+
+    # ACDP (AC Dynamic Power) messages
+    DC_ACDPReq = 59
+    DC_ACDPRes = 60
+    DC_ACDP_BPTReq = 61
+    DC_ACDP_BPTRes = 62
 
 
 class V2GError(RuntimeError):

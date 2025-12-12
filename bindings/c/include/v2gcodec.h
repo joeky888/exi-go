@@ -276,7 +276,9 @@ int v2g_decode_struct(int msg_type, const uint8_t *exi_data, size_t exi_len,
  */
 const char *v2g_message_type_name(int msg_type);
 
-/* Message type constants for ISO 15118-20 CommonMessages */
+/* Message type constants for ISO 15118-20 */
+
+/* Common messages (all services) */
 #define V2G_MSG_AuthorizationReq 0
 #define V2G_MSG_AuthorizationRes 1
 #define V2G_MSG_AuthorizationSetupReq 2
@@ -305,6 +307,20 @@ const char *v2g_message_type_name(int msg_type);
 #define V2G_MSG_VehicleCheckInRes 50
 #define V2G_MSG_VehicleCheckOutReq 51
 #define V2G_MSG_VehicleCheckOutRes 52
+
+/* WPT (Wireless Power Transfer) messages */
+#define V2G_MSG_WPT_AlignmentCheckReq 53
+#define V2G_MSG_WPT_AlignmentCheckRes 54
+#define V2G_MSG_WPT_FinePositioningReq 55
+#define V2G_MSG_WPT_FinePositioningRes 56
+#define V2G_MSG_WPT_ChargeLoopReq 57
+#define V2G_MSG_WPT_ChargeLoopRes 58
+
+/* ACDP (AC Dynamic Power) messages */
+#define V2G_MSG_DC_ACDPReq 59
+#define V2G_MSG_DC_ACDPRes 60
+#define V2G_MSG_DC_ACDP_BPTReq 61
+#define V2G_MSG_DC_ACDP_BPTRes 62
 
 #ifdef __cplusplus
 } /* extern "C" */

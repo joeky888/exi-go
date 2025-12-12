@@ -154,6 +154,50 @@ func EncodeStruct(v interface{}) ([]byte, error) {
 			return nil, err
 		}
 
+	// WPT (Wireless Power Transfer) messages
+	case *generated.WPT_AlignmentCheckReq:
+		if err := EncodeTopLevelWPT_AlignmentCheckReq(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.WPT_AlignmentCheckRes:
+		if err := EncodeTopLevelWPT_AlignmentCheckRes(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.WPT_FinePositioningReq:
+		if err := EncodeTopLevelWPT_FinePositioningReq(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.WPT_FinePositioningRes:
+		if err := EncodeTopLevelWPT_FinePositioningRes(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.WPT_ChargeLoopReq:
+		if err := EncodeTopLevelWPT_ChargeLoopReq(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.WPT_ChargeLoopRes:
+		if err := EncodeTopLevelWPT_ChargeLoopRes(bs, val); err != nil {
+			return nil, err
+		}
+
+	// ACDP (AC Dynamic Power) messages
+	case *generated.DC_ACDPReq:
+		if err := EncodeTopLevelDC_ACDPReq(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.DC_ACDPRes:
+		if err := EncodeTopLevelDC_ACDPRes(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.DC_ACDP_BPTReq:
+		if err := EncodeTopLevelDC_ACDP_BPTReq(bs, val); err != nil {
+			return nil, err
+		}
+	case *generated.DC_ACDP_BPTRes:
+		if err := EncodeTopLevelDC_ACDP_BPTRes(bs, val); err != nil {
+			return nil, err
+		}
+
 	default:
 		return nil, fmt.Errorf("EncodeStruct: unsupported type %T", v)
 	}
@@ -250,6 +294,31 @@ func DecodeStruct(data []byte, prototypeMsg interface{}) (interface{}, error) {
 		return DecodeVehicleCheckOutReq(bs)
 	case 52: // VehicleCheckOutRes
 		return DecodeVehicleCheckOutRes(bs)
+
+	// WPT (Wireless Power Transfer) messages
+	case 53: // WPT_AlignmentCheckReq
+		return DecodeWPT_AlignmentCheckReq(bs)
+	case 54: // WPT_AlignmentCheckRes
+		return DecodeWPT_AlignmentCheckRes(bs)
+	case 55: // WPT_FinePositioningReq
+		return DecodeWPT_FinePositioningReq(bs)
+	case 56: // WPT_FinePositioningRes
+		return DecodeWPT_FinePositioningRes(bs)
+	case 57: // WPT_ChargeLoopReq
+		return DecodeWPT_ChargeLoopReq(bs)
+	case 58: // WPT_ChargeLoopRes
+		return DecodeWPT_ChargeLoopRes(bs)
+
+	// ACDP (AC Dynamic Power) messages
+	case 59: // DC_ACDPReq
+		return DecodeDC_ACDPReq(bs)
+	case 60: // DC_ACDPRes
+		return DecodeDC_ACDPRes(bs)
+	case 61: // DC_ACDP_BPTReq
+		return DecodeDC_ACDP_BPTReq(bs)
+	case 62: // DC_ACDP_BPTRes
+		return DecodeDC_ACDP_BPTRes(bs)
+
 	default:
 		return nil, fmt.Errorf("DecodeStruct: unsupported event code %d", eventCode)
 	}

@@ -30,9 +30,9 @@ import (
 	"example.com/exi-go/pkg/v2g/generated"
 )
 
-// Message type enum matching ISO 15118-20 CommonMessages event codes
+// Message type enum matching ISO 15118-20 event codes
 const (
-	// Event codes for ISO 15118-20 CommonMessages
+	// Common messages (all services)
 	V2G_MSG_AuthorizationReq           = 0
 	V2G_MSG_AuthorizationRes           = 1
 	V2G_MSG_AuthorizationSetupReq      = 2
@@ -61,6 +61,20 @@ const (
 	V2G_MSG_VehicleCheckInRes          = 50
 	V2G_MSG_VehicleCheckOutReq         = 51
 	V2G_MSG_VehicleCheckOutRes         = 52
+
+	// WPT (Wireless Power Transfer) messages
+	V2G_MSG_WPT_AlignmentCheckReq  = 53
+	V2G_MSG_WPT_AlignmentCheckRes  = 54
+	V2G_MSG_WPT_FinePositioningReq = 55
+	V2G_MSG_WPT_FinePositioningRes = 56
+	V2G_MSG_WPT_ChargeLoopReq      = 57
+	V2G_MSG_WPT_ChargeLoopRes      = 58
+
+	// ACDP (AC Dynamic Power) messages
+	V2G_MSG_DC_ACDPReq     = 59
+	V2G_MSG_DC_ACDPRes     = 60
+	V2G_MSG_DC_ACDP_BPTReq = 61
+	V2G_MSG_DC_ACDP_BPTRes = 62
 )
 
 //export v2g_encode_struct
@@ -298,6 +312,88 @@ func v2g_encode_struct(msg_type C.int, json_data *C.char, json_len C.size_t, out
 		var msg generated.CLResControlMode
 		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
 			setLastError("unmarshal CLResControlMode: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	// WPT messages
+	case V2G_MSG_WPT_AlignmentCheckReq:
+		var msg generated.WPT_AlignmentCheckReq
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal WPT_AlignmentCheckReq: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_WPT_AlignmentCheckRes:
+		var msg generated.WPT_AlignmentCheckRes
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal WPT_AlignmentCheckRes: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_WPT_FinePositioningReq:
+		var msg generated.WPT_FinePositioningReq
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal WPT_FinePositioningReq: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_WPT_FinePositioningRes:
+		var msg generated.WPT_FinePositioningRes
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal WPT_FinePositioningRes: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_WPT_ChargeLoopReq:
+		var msg generated.WPT_ChargeLoopReq
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal WPT_ChargeLoopReq: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_WPT_ChargeLoopRes:
+		var msg generated.WPT_ChargeLoopRes
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal WPT_ChargeLoopRes: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	// ACDP messages
+	case V2G_MSG_DC_ACDPReq:
+		var msg generated.DC_ACDPReq
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal DC_ACDPReq: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_DC_ACDPRes:
+		var msg generated.DC_ACDPRes
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal DC_ACDPRes: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_DC_ACDP_BPTReq:
+		var msg generated.DC_ACDP_BPTReq
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal DC_ACDP_BPTReq: %v", err)
+			return C.int(_v2g_err_invalid)
+		}
+		result, err = exi.EncodeStruct(&msg)
+
+	case V2G_MSG_DC_ACDP_BPTRes:
+		var msg generated.DC_ACDP_BPTRes
+		if err := json.Unmarshal(jsonBytes, &msg); err != nil {
+			setLastError("unmarshal DC_ACDP_BPTRes: %v", err)
 			return C.int(_v2g_err_invalid)
 		}
 		result, err = exi.EncodeStruct(&msg)
@@ -563,6 +659,88 @@ func v2g_decode_struct(msg_type C.int, exi_data *C.uint8_t, exi_len C.size_t, ou
 		}
 		jsonBytes, err = json.Marshal(msg)
 
+	// WPT messages
+	case V2G_MSG_WPT_AlignmentCheckReq:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.WPT_AlignmentCheckReq{})
+		if err != nil {
+			setLastError("decode WPT_AlignmentCheckReq: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_WPT_AlignmentCheckRes:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.WPT_AlignmentCheckRes{})
+		if err != nil {
+			setLastError("decode WPT_AlignmentCheckRes: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_WPT_FinePositioningReq:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.WPT_FinePositioningReq{})
+		if err != nil {
+			setLastError("decode WPT_FinePositioningReq: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_WPT_FinePositioningRes:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.WPT_FinePositioningRes{})
+		if err != nil {
+			setLastError("decode WPT_FinePositioningRes: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_WPT_ChargeLoopReq:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.WPT_ChargeLoopReq{})
+		if err != nil {
+			setLastError("decode WPT_ChargeLoopReq: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_WPT_ChargeLoopRes:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.WPT_ChargeLoopRes{})
+		if err != nil {
+			setLastError("decode WPT_ChargeLoopRes: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	// ACDP messages
+	case V2G_MSG_DC_ACDPReq:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.DC_ACDPReq{})
+		if err != nil {
+			setLastError("decode DC_ACDPReq: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_DC_ACDPRes:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.DC_ACDPRes{})
+		if err != nil {
+			setLastError("decode DC_ACDPRes: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_DC_ACDP_BPTReq:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.DC_ACDP_BPTReq{})
+		if err != nil {
+			setLastError("decode DC_ACDP_BPTReq: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
+	case V2G_MSG_DC_ACDP_BPTRes:
+		msg, err := exi.DecodeStruct(exiBytes, &generated.DC_ACDP_BPTRes{})
+		if err != nil {
+			setLastError("decode DC_ACDP_BPTRes: %v", err)
+			return C.int(_v2g_err_decode)
+		}
+		jsonBytes, err = json.Marshal(msg)
+
 	default:
 		setLastError("v2g_decode_struct: unsupported message type %d", msg_type)
 		return C.int(_v2g_err_invalid)
@@ -651,6 +829,26 @@ func v2g_message_type_name(msg_type C.int) *C.char {
 		name = "VehicleCheckOutReq"
 	case V2G_MSG_VehicleCheckOutRes:
 		name = "VehicleCheckOutRes"
+	case V2G_MSG_WPT_AlignmentCheckReq:
+		name = "WPT_AlignmentCheckReq"
+	case V2G_MSG_WPT_AlignmentCheckRes:
+		name = "WPT_AlignmentCheckRes"
+	case V2G_MSG_WPT_FinePositioningReq:
+		name = "WPT_FinePositioningReq"
+	case V2G_MSG_WPT_FinePositioningRes:
+		name = "WPT_FinePositioningRes"
+	case V2G_MSG_WPT_ChargeLoopReq:
+		name = "WPT_ChargeLoopReq"
+	case V2G_MSG_WPT_ChargeLoopRes:
+		name = "WPT_ChargeLoopRes"
+	case V2G_MSG_DC_ACDPReq:
+		name = "DC_ACDPReq"
+	case V2G_MSG_DC_ACDPRes:
+		name = "DC_ACDPRes"
+	case V2G_MSG_DC_ACDP_BPTReq:
+		name = "DC_ACDP_BPTReq"
+	case V2G_MSG_DC_ACDP_BPTRes:
+		name = "DC_ACDP_BPTRes"
 	default:
 		name = fmt.Sprintf("Unknown(%d)", msg_type)
 	}

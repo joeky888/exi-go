@@ -1,43 +1,60 @@
 ## Current Status
 
-✅ **26 Message Types Implemented** (100% complete):
+✅ **42 Message Types Implemented** (100% complete):
 
-** Implemented (26 types):**
+### Message Type Reference Table
 
-- SessionSetupReq (event 35) - encoder/decoder COMPLETE
-- SessionSetupRes (event 36) - encoder/decoder COMPLETE
-- ServiceDiscoveryReq (event 31) - encoder/decoder COMPLETE
-- ServiceDiscoveryRes (event 32) - encoder/decoder COMPLETE (stub)
-- ServiceDetailReq (event 29) - encoder/decoder COMPLETE
-- SessionStopReq (event 37) - encoder/decoder COMPLETE (with complex optional fields)
-- SessionStopRes (event 38) - encoder/decoder COMPLETE
-- AuthorizationSetupReq (event 2) - encoder/decoder COMPLETE (simplest message - Header only)
-- ServiceSelectionRes (event 34) - encoder/decoder COMPLETE
-- MeteringConfirmationReq (event 16) - encoder/decoder COMPLETE
-- MeteringConfirmationRes (event 17) - encoder/decoder COMPLETE
-- AuthorizationRes (event 1) - encoder/decoder COMPLETE
-- PowerDeliveryRes (event 22) - encoder/decoder COMPLETE
-- VehicleCheckInRes (event 43) - encoder/decoder COMPLETE
-- VehicleCheckOutRes (event 45) - encoder/decoder COMPLETE
-- VehicleCheckInReq (event 49) - encoder/decoder COMPLETE
-- VehicleCheckOutReq (event 51) - encoder/decoder COMPLETE
-- ServiceSelectionReq (event 33) - encoder/decoder COMPLETE
-- AuthorizationSetupRes (event 3) - encoder/decoder COMPLETE
-- ScheduleExchangeReq (event 27) - encoder/decoder COMPLETE
-- ScheduleExchangeRes (event 28) - encoder/decoder COMPLETE
-- PowerDeliveryReq (event 21) - encoder/decoder COMPLETE
-- AuthorizationReq (event 0) - encoder/decoder COMPLETE
-- ServiceDetailRes (event 30) - encoder/decoder COMPLETE
-- CertificateInstallationReq (event 7) - encoder/decoder COMPLETE
-- CertificateInstallationRes (event 8) - encoder/decoder COMPLETE
-- CLReqControlMode (event 4) - encoder/decoder COMPLETE
-- CLResControlMode (event 5) - encoder/decoder COMPLETE
+| Event Code | Message Type               | Sender | Service     | Description                                    |
+| ---------- | -------------------------- | ------ | ----------- | ---------------------------------------------- |
+| 0          | AuthorizationReq           | EVCC   | All         | Request authorization for charging             |
+| 1          | AuthorizationRes           | SECC   | All         | Response to authorization request              |
+| 2          | AuthorizationSetupReq      | EVCC   | All         | Setup authorization method                     |
+| 3          | AuthorizationSetupRes      | SECC   | All         | Response to authorization setup                |
+| 4          | CLReqControlMode           | EVCC   | DC/WPT      | Control loop request (charge parameters)       |
+| 5          | CLResControlMode           | SECC   | DC/WPT      | Control loop response (EVSE limits)            |
+| 7          | CertificateInstallationReq | EVCC   | All         | Install V2G certificate                        |
+| 8          | CertificateInstallationRes | SECC   | All         | Certificate installation response              |
+| 16         | MeteringConfirmationReq    | EVCC   | All         | Confirm metering data received                 |
+| 17         | MeteringConfirmationRes    | SECC   | All         | Metering confirmation response                 |
+| 21         | PowerDeliveryReq           | EVCC   | All         | Request power delivery start/stop              |
+| 22         | PowerDeliveryRes           | SECC   | All         | Power delivery response                        |
+| 27         | ScheduleExchangeReq        | EVCC   | All         | Exchange charging schedules                    |
+| 28         | ScheduleExchangeRes        | SECC   | All         | Charging schedule response                     |
+| 29         | ServiceDetailReq           | EVCC   | All         | Request service parameter details              |
+| 30         | ServiceDetailRes           | SECC   | All         | Service parameter details response             |
+| 31         | ServiceDiscoveryReq        | EVCC   | All         | Discover available services                    |
+| 32         | ServiceDiscoveryRes        | SECC   | All         | Available services response                    |
+| 33         | ServiceSelectionReq        | EVCC   | All         | Select charging service                        |
+| 34         | ServiceSelectionRes        | SECC   | All         | Service selection confirmation                 |
+| 35         | SessionSetupReq            | EVCC   | All         | Initialize communication session               |
+| 36         | SessionSetupRes            | SECC   | All         | Session setup response                         |
+| 37         | SessionStopReq             | EVCC   | All         | Terminate communication session                |
+| 38         | SessionStopRes             | SECC   | All         | Session stop confirmation                      |
+| 49         | VehicleCheckInReq          | EVCC   | WPT         | Check in vehicle for wireless charging         |
+| 50         | VehicleCheckInRes          | SECC   | WPT         | Vehicle check-in response                      |
+| 51         | VehicleCheckOutReq         | EVCC   | WPT         | Check out vehicle after charging               |
+| 52         | VehicleCheckOutRes         | SECC   | WPT         | Vehicle check-out confirmation                 |
+| 53         | WPT_AlignmentCheckReq      | EVCC   | WPT         | Check vehicle alignment for wireless charging  |
+| 54         | WPT_AlignmentCheckRes      | SECC   | WPT         | Alignment status and offset data               |
+| 55         | WPT_FinePositioningReq     | EVCC   | WPT         | Request fine positioning guidance              |
+| 56         | WPT_FinePositioningRes     | SECC   | WPT         | Fine positioning instructions                  |
+| 57         | WPT_ChargeLoopReq          | EVCC   | WPT         | Wireless charge loop control request           |
+| 58         | WPT_ChargeLoopRes          | SECC   | WPT         | Wireless charge loop status/limits             |
+| 59         | DC_ACDPReq                 | EVCC   | DC-ACDP     | DC charging with AC dynamic power request      |
+| 60         | DC_ACDPRes                 | SECC   | DC-ACDP     | DC-ACDP charging parameters response           |
+| 61         | DC_ACDP_BPTReq             | EVCC   | DC-ACDP-BPT | Bidirectional DC-ACDP charge/discharge request |
+| 62         | DC_ACDP_BPTRes             | SECC   | DC-ACDP-BPT | Bidirectional DC-ACDP response                 |
 
-✅ **Golden Test Files Generated**:
+**Legend:**
 
-- SessionSetupReq.exi (21 bytes)
-- SessionSetupRes.exi (28 bytes)
-- ServiceDiscoveryReq.exi (14 bytes)
+- **EVCC**: Electric Vehicle Communication Controller (messages sent by the vehicle)
+- **SECC**: Supply Equipment Communication Controller (messages sent by the charging station)
+- **Service Types**:
+  - **All**: Common messages used across all charging services
+  - **DC**: DC charging service
+  - **WPT**: Wireless Power Transfer (inductive/wireless charging)
+  - **DC-ACDP**: DC charging with AC-side Dynamic Power control
+  - **DC-ACDP-BPT**: Bidirectional Power Transfer variant of DC-ACDP
 
 ✅ **Code Quality**:
 

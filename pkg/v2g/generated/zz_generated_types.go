@@ -416,3 +416,165 @@ type CLResControlMode struct {
 	XMLName xml.Name          `xml:"CLResControlMode"`
 	Header  MessageHeaderType `xml:"Header"`
 }
+
+// ========================================
+// WPT (Wireless Power Transfer) Messages
+// ========================================
+
+// WPT_AlignmentCheckReq represents a WPT AlignmentCheck request message.
+// Used to check vehicle alignment before wireless charging starts.
+type WPT_AlignmentCheckReq struct {
+	XMLName xml.Name          `xml:"WPT_AlignmentCheckReq"`
+	Header  MessageHeaderType `xml:"Header"`
+}
+
+// WPT_AlignmentCheckRes represents a WPT AlignmentCheck response message.
+type WPT_AlignmentCheckRes struct {
+	XMLName           xml.Name          `xml:"WPT_AlignmentCheckRes"`
+	Header            MessageHeaderType `xml:"Header"`
+	ResponseCode      string            `xml:"ResponseCode"`
+	AlignmentStatus   string            `xml:"AlignmentStatus"`             // "Aligned", "NotAligned", "InProgress"
+	AlignmentOffset_X *RationalNumber   `xml:"AlignmentOffset_X,omitempty"` // X-axis offset
+	AlignmentOffset_Y *RationalNumber   `xml:"AlignmentOffset_Y,omitempty"` // Y-axis offset
+	AlignmentOffset_Z *RationalNumber   `xml:"AlignmentOffset_Z,omitempty"` // Z-axis offset (height)
+}
+
+// WPT_FinePositioningReq represents a WPT FinePositioning request message.
+// Used for precise positioning guidance during wireless charging setup.
+type WPT_FinePositioningReq struct {
+	XMLName xml.Name          `xml:"WPT_FinePositioningReq"`
+	Header  MessageHeaderType `xml:"Header"`
+}
+
+// WPT_FinePositioningRes represents a WPT FinePositioning response message.
+type WPT_FinePositioningRes struct {
+	XMLName               xml.Name          `xml:"WPT_FinePositioningRes"`
+	Header                MessageHeaderType `xml:"Header"`
+	ResponseCode          string            `xml:"ResponseCode"`
+	PositioningStatus     string            `xml:"PositioningStatus"`               // "Complete", "InProgress", "Failed"
+	GuidanceDirection     *string           `xml:"GuidanceDirection,omitempty"`     // "Forward", "Backward", "Left", "Right", "Up", "Down"
+	GuidanceDistance      *RationalNumber   `xml:"GuidanceDistance,omitempty"`      // Distance to move
+	FinePositioningSignal *int16            `xml:"FinePositioningSignal,omitempty"` // Signal strength indicator
+}
+
+// WPT_ChargeLoopReq represents a WPT ChargeLoop request message.
+// Used during the wireless charging loop to monitor and control power transfer.
+type WPT_ChargeLoopReq struct {
+	XMLName               xml.Name          `xml:"WPT_ChargeLoopReq"`
+	Header                MessageHeaderType `xml:"Header"`
+	EVProcessing          string            `xml:"EVProcessing"`                    // "Ongoing", "Finished"
+	PowerRequest          *RationalNumber   `xml:"PowerRequest,omitempty"`          // Requested power level
+	EVTargetEnergyRequest *RationalNumber   `xml:"EVTargetEnergyRequest,omitempty"` // Target energy for session
+	EVMaximumPowerLimit   *RationalNumber   `xml:"EVMaximumPowerLimit,omitempty"`   // Maximum power limit
+	EVMinimumPowerLimit   *RationalNumber   `xml:"EVMinimumPowerLimit,omitempty"`   // Minimum power limit
+	DepartureTime         *uint64           `xml:"DepartureTime,omitempty"`         // Expected departure time
+}
+
+// WPT_ChargeLoopRes represents a WPT ChargeLoop response message.
+type WPT_ChargeLoopRes struct {
+	XMLName                xml.Name          `xml:"WPT_ChargeLoopRes"`
+	Header                 MessageHeaderType `xml:"Header"`
+	ResponseCode           string            `xml:"ResponseCode"`
+	EVSEProcessing         string            `xml:"EVSEProcessing"`                   // "Ongoing", "Finished"
+	EVSEPresentPower       *RationalNumber   `xml:"EVSEPresentPower,omitempty"`       // Current power output
+	EVSEMaximumPowerLimit  *RationalNumber   `xml:"EVSEMaximumPowerLimit,omitempty"`  // EVSE maximum power
+	EVSEMinimumPowerLimit  *RationalNumber   `xml:"EVSEMinimumPowerLimit,omitempty"`  // EVSE minimum power
+	MeterInfo              *WPT_MeterInfo    `xml:"MeterInfo,omitempty"`              // Metering information
+	ChargingComplete       *bool             `xml:"ChargingComplete,omitempty"`       // Charging completion flag
+	EVSETargetFrequency    *RationalNumber   `xml:"EVSETargetFrequency,omitempty"`    // Target operating frequency
+	LF_EVSEFinePositioning *int16            `xml:"LF_EVSEFinePositioning,omitempty"` // Low frequency fine positioning signal
+}
+
+// WPT_MeterInfo represents metering information for WPT charging.
+type WPT_MeterInfo struct {
+	MeterID        string         `xml:"MeterID"`
+	MeterReading   RationalNumber `xml:"MeterReading"`             // Current meter reading
+	MeterTimestamp *uint64        `xml:"MeterTimestamp,omitempty"` // Timestamp of reading
+	MeterSignature []byte         `xml:"MeterSignature,omitempty"` // Digital signature
+	MeterStatus    *int16         `xml:"MeterStatus,omitempty"`    // Meter status code
+}
+
+// ========================================
+// ACDP (AC Dynamic Power) Messages
+// ========================================
+
+// DC_ACDPReq represents a DC ACDP (AC Dynamic Power) request message.
+// Used for DC charging with AC-side dynamic power control.
+type DC_ACDPReq struct {
+	XMLName                xml.Name           `xml:"DC_ACDPReq"`
+	Header                 MessageHeaderType  `xml:"Header"`
+	EVProcessing           string             `xml:"EVProcessing"`                     // "Ongoing", "Finished"
+	EVTargetEnergyRequest  RationalNumber     `xml:"EVTargetEnergyRequest"`            // Target energy
+	EVMaximumEnergyRequest *RationalNumber    `xml:"EVMaximumEnergyRequest,omitempty"` // Maximum energy
+	EVMinimumEnergyRequest *RationalNumber    `xml:"EVMinimumEnergyRequest,omitempty"` // Minimum energy
+	DisplayParameters      *DisplayParameters `xml:"DisplayParameters,omitempty"`      // Information for display
+	DynamicControlMode     *string            `xml:"DynamicControlMode,omitempty"`     // "Scheduled", "Dynamic"
+}
+
+// DC_ACDPRes represents a DC ACDP response message.
+type DC_ACDPRes struct {
+	XMLName                  xml.Name           `xml:"DC_ACDPRes"`
+	Header                   MessageHeaderType  `xml:"Header"`
+	ResponseCode             string             `xml:"ResponseCode"`
+	EVSEProcessing           string             `xml:"EVSEProcessing"`                     // "Ongoing", "Finished"
+	EVSEPresentActivePower   *RationalNumber    `xml:"EVSEPresentActivePower,omitempty"`   // Current active power
+	EVSEPresentReactivePower *RationalNumber    `xml:"EVSEPresentReactivePower,omitempty"` // Current reactive power
+	EVSEPowerRampLimitation  *bool              `xml:"EVSEPowerRampLimitation,omitempty"`  // Power ramp limit flag
+	MeterInfo                *DC_ACDP_MeterInfo `xml:"MeterInfo,omitempty"`                // Metering data
+	ReceiptRequired          *bool              `xml:"ReceiptRequired,omitempty"`          // Receipt requirement flag
+}
+
+// DC_ACDP_MeterInfo represents metering information for DC ACDP charging.
+type DC_ACDP_MeterInfo struct {
+	MeterID        string         `xml:"MeterID"`
+	MeterReading   RationalNumber `xml:"MeterReading"`
+	MeterTimestamp *uint64        `xml:"MeterTimestamp,omitempty"`
+	MeterSignature []byte         `xml:"MeterSignature,omitempty"`
+	MeterStatus    *int16         `xml:"MeterStatus,omitempty"`
+	TMeter         *int64         `xml:"TMeter,omitempty"` // Temperature of meter
+}
+
+// DC_ACDP_BPTReq represents a DC ACDP BPT (Bidirectional Power Transfer) request message.
+// Extends DC_ACDPReq with bidirectional power transfer capabilities.
+type DC_ACDP_BPTReq struct {
+	XMLName                 xml.Name           `xml:"DC_ACDP_BPTReq"`
+	Header                  MessageHeaderType  `xml:"Header"`
+	EVProcessing            string             `xml:"EVProcessing"`                      // "Ongoing", "Finished"
+	EVTargetEnergyRequest   RationalNumber     `xml:"EVTargetEnergyRequest"`             // Target energy
+	EVMaximumEnergyRequest  *RationalNumber    `xml:"EVMaximumEnergyRequest,omitempty"`  // Maximum energy
+	EVMinimumEnergyRequest  *RationalNumber    `xml:"EVMinimumEnergyRequest,omitempty"`  // Minimum energy
+	EVMaximumDischargePower *RationalNumber    `xml:"EVMaximumDischargePower,omitempty"` // Max discharge power (V2G)
+	EVMinimumDischargePower *RationalNumber    `xml:"EVMinimumDischargePower,omitempty"` // Min discharge power (V2G)
+	DisplayParameters       *DisplayParameters `xml:"DisplayParameters,omitempty"`       // Display info
+	DynamicControlMode      *string            `xml:"DynamicControlMode,omitempty"`      // "Scheduled", "Dynamic"
+	BPT_ChannelSelection    *string            `xml:"BPT_ChannelSelection,omitempty"`    // Channel selection for BPT
+}
+
+// DC_ACDP_BPTRes represents a DC ACDP BPT response message.
+type DC_ACDP_BPTRes struct {
+	XMLName                   xml.Name           `xml:"DC_ACDP_BPTRes"`
+	Header                    MessageHeaderType  `xml:"Header"`
+	ResponseCode              string             `xml:"ResponseCode"`
+	EVSEProcessing            string             `xml:"EVSEProcessing"`                      // "Ongoing", "Finished"
+	EVSEPresentActivePower    *RationalNumber    `xml:"EVSEPresentActivePower,omitempty"`    // Current active power
+	EVSEPresentReactivePower  *RationalNumber    `xml:"EVSEPresentReactivePower,omitempty"`  // Current reactive power
+	EVSEPowerRampLimitation   *bool              `xml:"EVSEPowerRampLimitation,omitempty"`   // Power ramp limit
+	MeterInfo                 *DC_ACDP_MeterInfo `xml:"MeterInfo,omitempty"`                 // Metering data
+	ReceiptRequired           *bool              `xml:"ReceiptRequired,omitempty"`           // Receipt requirement
+	EVSEMaximumDischargePower *RationalNumber    `xml:"EVSEMaximumDischargePower,omitempty"` // Max V2G discharge power
+	EVSEMinimumDischargePower *RationalNumber    `xml:"EVSEMinimumDischargePower,omitempty"` // Min V2G discharge power
+}
+
+// DisplayParameters represents parameters for user display during charging.
+type DisplayParameters struct {
+	PresentSOC               *uint8          `xml:"PresentSOC,omitempty"`               // State of Charge (0-100%)
+	MinimumSOC               *uint8          `xml:"MinimumSOC,omitempty"`               // Minimum SOC target
+	TargetSOC                *uint8          `xml:"TargetSOC,omitempty"`                // Target SOC
+	MaximumSOC               *uint8          `xml:"MaximumSOC,omitempty"`               // Maximum SOC limit
+	RemainingTimeToMinSOC    *uint16         `xml:"RemainingTimeToMinSOC,omitempty"`    // Time to min SOC (seconds)
+	RemainingTimeToTargetSOC *uint16         `xml:"RemainingTimeToTargetSOC,omitempty"` // Time to target SOC (seconds)
+	RemainingTimeToMaxSOC    *uint16         `xml:"RemainingTimeToMaxSOC,omitempty"`    // Time to max SOC (seconds)
+	ChargingComplete         *bool           `xml:"ChargingComplete,omitempty"`         // Charging completion flag
+	BatteryEnergyCapacity    *RationalNumber `xml:"BatteryEnergyCapacity,omitempty"`    // Total battery capacity
+	InletHot                 *bool           `xml:"InletHot,omitempty"`                 // Inlet temperature warning
+}
