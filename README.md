@@ -87,13 +87,11 @@ In addition to the native Go implementation, comprehensive language bindings hav
 - `v2g_encode_xml()` / `v2g_decode_exi()` - XML-based encoding
 - `v2g_encode_struct()` / `v2g_decode_struct()` - **Native struct encoding (efficient)**
 - `v2g_message_type_name()` - Message type introspection
-- All 26 message types exported with constants (V2G*MSG*\*)
 
 **Python API (v2gcodec_cffi.py):**
 
 - CFFI-based wrapper with high-level Pythonic interface
 - `V2GCodec` class with context manager support
-- `MessageType` enum for all 26 message types
 - `encode_struct()` / `decode_struct()` methods using dictionaries
 - Automatic memory management (no manual buffer freeing)
 
