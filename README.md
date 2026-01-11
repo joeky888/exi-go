@@ -1,3 +1,58 @@
+## Communication Flow (ISO 15118-20)
+
+```mermaid
+sequenceDiagram
+    participant EV as EVCC (Vehicle)
+    participant SE as SECC (Charger)
+
+    rect rgb(240, 240, 240)
+    Note over EV, SE: Session Setup Phase
+    EV->>SE: SessionSetupReq
+    SE->>EV: SessionSetupRes
+    end
+
+    rect rgb(230, 240, 250)
+    Note over EV, SE: Authorization Phase
+    EV->>SE: AuthorizationSetupReq
+    SE->>EV: AuthorizationSetupRes
+    EV->>SE: AuthorizationReq
+    SE->>EV: AuthorizationRes (Finished)
+    end
+
+    rect rgb(240, 250, 240)
+    Note over EV, SE: Discovery & Selection Phase
+    EV->>SE: ServiceDiscoveryReq
+    SE->>EV: ServiceDiscoveryRes
+    EV->>SE: ServiceSelectionReq
+    SE->>EV: ServiceSelectionRes
+    end
+
+    rect rgb(250, 240, 230)
+    Note over EV, SE: Schedule Exchange Phase
+    EV->>SE: ScheduleExchangeReq
+    SE->>EV: ScheduleExchangeRes
+    end
+
+    rect rgb(250, 250, 210)
+    Note over EV, SE: Power Delivery Phase
+    EV->>SE: PowerDeliveryReq (Start)
+    SE->>EV: PowerDeliveryRes
+    end
+
+    loop Charge Loop (Cyclic 100ms-500ms)
+        EV->>SE: DC_ACDP_BPTReq / CLReqControlMode
+        SE->>EV: DC_ACDP_BPTRes / CLResControlMode
+    end
+
+    rect rgb(250, 220, 220)
+    Note over EV, SE: Termination Phase
+    EV->>SE: PowerDeliveryReq (Stop)
+    SE->>EV: PowerDeliveryRes
+    EV->>SE: SessionStopReq
+    SE->>EV: SessionStopRes
+    end
+```
+
 ## Current Status
 
 ✅ **42 Message Types Implemented** (100% complete):
